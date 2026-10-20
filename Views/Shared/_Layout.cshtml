@@ -1,0 +1,60 @@
+﻿@* Defines the common layout for every application page. *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @* Sets character encoding and responsive screen behavior. *@
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    @* Uses the current view title in the browser tab. *@
+    <title>@ViewData["Title"] - MediCare</title>
+
+    @* Loads Bootstrap styles from the MVC template. *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    @* Loads the custom MediCare design. *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @* Displays navigation links across the application. *@
+    <header class="site-header">
+        <nav class="nav-container">
+            <a asp-controller="Doctors" asp-action="Index" class="brand">
+                <span class="brand-icon">✚</span>
+                <span>MediCare<small>HEALTHCARE</small></span>
+            </a>
+
+            <div class="nav-links">
+                <a asp-controller="Doctors" asp-action="Index">Find Doctors</a>
+                <a asp-controller="Posts" asp-action="Index">API Posts</a>
+            </div>
+
+            <a asp-controller="Doctors" asp-action="Index" class="nav-cta">
+                Book a Visit →
+            </a>
+        </nav>
+    </header>
+
+    @* Renders the content of the current view. *@
+    <main class="main-container">
+        @RenderBody()
+    </main>
+
+    @* Displays a common footer. *@
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <span>✚ MediCare</span>
+            <span>Care with compassion. Health with confidence.</span>
+            <span>ASP.NET Core MVC Practical</span>
+        </div>
+    </footer>
+
+    @* Loads the JavaScript libraries used by the MVC template. *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* Allows views to load their own validation scripts. *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

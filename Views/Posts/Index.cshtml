@@ -1,0 +1,41 @@
+@* Receives posts fetched asynchronously from JSONPlaceholder. *@
+@model IEnumerable<HospitalAppointmentSystem.Controllers.SamplePost>
+
+@{
+    ViewData["Title"] = "Sample API Posts";
+}
+
+<section class="section-heading">
+    <div>
+        <span class="eyebrow">ASYNCHRONOUS WEB REQUEST</span>
+        <h1>Sample API Posts</h1>
+        <p>Post information retrieved from JSONPlaceholder using HttpClient.</p>
+    </div>
+</section>
+
+@if (ViewBag.Error != null)
+{
+    @* Shows an error when the external service is unavailable. *@
+    <div class="api-error">@ViewBag.Error</div>
+}
+
+<div class="table-card">
+    <table class="posts-table">
+        <thead>
+            <tr>
+                <th>Post ID</th>
+                <th>Post Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model)
+            {
+                @* Displays each post ID and title. *@
+                <tr>
+                    <td><span class="id-badge">@post.Id</span></td>
+                    <td>@post.Title</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

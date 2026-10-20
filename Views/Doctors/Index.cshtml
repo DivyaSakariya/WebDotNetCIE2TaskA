@@ -1,0 +1,92 @@
+﻿@* Imports the doctor model and extension namespace. *@
+@model IEnumerable<HospitalAppointmentSystem.Models.Doctor>
+@using HospitalAppointmentSystem.Extensions
+
+@* Sets the browser page title. *@
+@{
+    ViewData["Title"] = "Find a Doctor";
+}
+
+<section class="hero-section">
+    <div>
+        <span class="eyebrow">MEDICARE HEALTHCARE</span>
+        <h1>Find the right doctor<br />for your health.</h1>
+        <p>Experienced specialists, transparent pricing, and simple appointment requests.</p>
+        <div class="hero-points">
+            <span>✓ Experienced doctors</span>
+            <span>✓ Clear consultation fees</span>
+            <span>✓ Easy appointment requests</span>
+        </div>
+    </div>
+    <div class="hero-icon">
+        <span>✚</span>
+        <small>Care that puts you first</small>
+    </div>
+</section>
+
+<div class="section-heading">
+    <div>
+        <span class="eyebrow">OUR SPECIALISTS</span>
+        <h2>Meet our doctors</h2>
+        <p>Choose a specialist and explore their consultation details.</p>
+    </div>
+    <span class="doctor-count">@Model.Count() doctors available</span>
+</div>
+
+@* Sends the selected specialization through the query string. *@
+<form method="get" asp-action="Index" class="filter-bar">
+    <label for="specialization">Filter by specialization</label>
+    <select id="specialization" name="specialization">
+        <option value="">All specializations</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Dermatology">Dermatology</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Pediatrics">Pediatrics</option>
+        <option value="Orthopedics">Orthopedics</option>
+    </select>
+    <button type="submit" class="btn-primary">Apply Filter</button>
+    <a asp-action="Index" class="btn-secondary">Reset</a>
+</form>
+
+<div class="doctor-grid">
+    @foreach (var doctor in Model)
+    {
+        @* Displays an individual doctor card. *@
+        <article class="doctor-card">
+            <div class="doctor-top">
+                <div class="doctor-avatar">
+                    @doctor.DoctorName.Split(' ').Last().Substring(0, 1)
+                </div>
+                <span class="available-tag">Available</span>
+            </div>
+
+            <span class="specialty-tag">@doctor.Specialization</span>
+            <h3>@doctor.DoctorName</h3>
+            <p class="experience">@doctor.Experience years of experience</p>
+
+            <div class="fee-row">
+                <span>Consultation fee</span>
+                <strong>₹@doctor.ConsultationFee.ToString("N0")</strong>
+            </div>
+
+            <div class="fee-row total-row">
+                <span>Total with service charge</span>
+                <strong>₹@doctor.CalculateTotalCharge().ToString("N0")</strong>
+            </div>
+
+            <a asp-action="Details"
+               asp-route-DoctorId="@doctor.DoctorId"
+               class="btn-primary full-button">
+                View Details →
+            </a>
+        </article>
+    }
+</div>
+
+<div class="info-strip">
+    <span class="info-symbol">ℹ</span>
+    <div>
+        <strong>Transparent consultation pricing</strong>
+        <p>A fixed ₹100 service charge is included in the total shown for each doctor.</p>
+    </div>
+</div>

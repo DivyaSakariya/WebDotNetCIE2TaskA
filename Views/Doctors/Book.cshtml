@@ -1,0 +1,80 @@
+@* Receives the appointment form data. *@
+@model HospitalAppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Request Appointment";
+    var doctor = (HospitalAppointmentSystem.Models.Doctor)ViewBag.Doctor;
+}
+
+<div class="form-page">
+    <a asp-action="Details"
+       asp-route-DoctorId="@Model.DoctorId"
+       class="back-link">← Back to doctor</a>
+
+    <section class="appointment-card">
+        <span class="eyebrow">YOUR HEALTH JOURNEY</span>
+        <h1>Request an appointment</h1>
+        <p>Enter your details to submit your appointment request.</p>
+
+        <div class="selected-doctor">
+            <div class="doctor-avatar">
+                @doctor.DoctorName.Split(' ').Last().Substring(0, 1)
+            </div>
+            <div>
+                <strong>@doctor.DoctorName</strong>
+                <span>@doctor.Specialization · @doctor.Experience years experience</span>
+            </div>
+        </div>
+
+        <form asp-action="Book" method="post">
+            @* Protects the form against cross-site request forgery. *@
+            @Html.AntiForgeryToken()
+
+            @* Submits the selected doctor's ID without showing an editable field. *@
+            <input type="hidden" asp-for="DoctorId" />
+
+            @* Displays model validation errors. *@
+            <div asp-validation-summary="ModelOnly" class="validation-error"></div>
+
+            <div class="form-group">
+                <label asp-for="PatientName">Patient full name</label>
+                <input asp-for="PatientName"
+                       placeholder="Enter your full name"
+                       autocomplete="name" />
+                <span asp-validation-for="PatientName" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AppointmentDate">Preferred appointment date</label>
+                <input asp-for="AppointmentDate"
+                       type="date"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="AppointmentDate" class="validation-error"></span>
+            </div>
+
+            <div class="charge-box">
+                <div>
+                    <span>Consultation fee</span>
+                    <strong>₹@doctor.ConsultationFee.ToString("N0")</strong>
+                </div>
+                <div>
+                    <span>Service charge</span>
+                    <strong>₹100</strong>
+                </div>
+                <div class="charge-total">
+                    <span>Total estimated charge</span>
+                    <strong>₹@((doctor.ConsultationFee + 100).ToString("N0"))</strong>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary full-button">
+                Submit Appointment Request →
+            </button>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    @* Enables client-side validation for form fields. *@
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,59 @@
+@* Receives the selected doctor from the controller. *@
+@model HospitalAppointmentSystem.Models.Doctor
+@using HospitalAppointmentSystem.Extensions
+
+@{
+    ViewData["Title"] = "Doctor Details";
+}
+
+<div class="details-wrap">
+    <a asp-action="Index" class="back-link">← Back to doctors</a>
+
+    <section class="details-card">
+        <div class="details-banner">
+            <div class="large-avatar">
+                @Model.DoctorName.Split(' ').Last().Substring(0, 1)
+            </div>
+            <span class="available-tag">Available for appointments</span>
+        </div>
+
+        <div class="details-content">
+            <span class="eyebrow">DOCTOR PROFILE · #@Model.DoctorId</span>
+            <h1>@Model.DoctorName</h1>
+            <span class="specialty-tag">@Model.Specialization</span>
+
+            <div class="details-stats">
+                <div>
+                    <strong>@Model.Experience years</strong>
+                    <span>Experience</span>
+                </div>
+                <div>
+                    <strong>₹@Model.ConsultationFee.ToString("N0")</strong>
+                    <span>Consultation fee</span>
+                </div>
+            </div>
+
+            <div class="charge-box">
+                <div>
+                    <span>Consultation fee</span>
+                    <strong>₹@Model.ConsultationFee.ToString("N0")</strong>
+                </div>
+                <div>
+                    <span>Service charge</span>
+                    <strong>₹100</strong>
+                </div>
+                <div class="charge-total">
+                    <span>Total payable</span>
+                    <strong>₹@Model.CalculateTotalCharge().ToString("N0")</strong>
+                </div>
+            </div>
+
+            @* Passes DoctorId in the booking URL. *@
+            <a asp-action="Book"
+               asp-route-DoctorId="@Model.DoctorId"
+               class="btn-primary full-button">
+                Request an Appointment →
+            </a>
+        </div>
+    </section>
+</div>

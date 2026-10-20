@@ -1,0 +1,45 @@
+@* Receives the submitted appointment information. *@
+@model HospitalAppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Request Submitted";
+    var doctor = (HospitalAppointmentSystem.Models.Doctor)ViewBag.Doctor;
+}
+
+<div class="success-page">
+    <section class="success-card">
+        <div class="success-icon">✓</div>
+
+        <span class="eyebrow">REQUEST RECEIVED</span>
+        <h1>Thank you, @Model.PatientName!</h1>
+        <p>Your appointment request has been submitted successfully.</p>
+
+        <div class="success-details">
+            <div>
+                <span>Doctor</span>
+                <strong>@doctor.DoctorName</strong>
+            </div>
+            <div>
+                <span>Specialization</span>
+                <strong>@doctor.Specialization</strong>
+            </div>
+            <div>
+                <span>Appointment date</span>
+                <strong>@Model.AppointmentDate.ToString("dd MMM yyyy")</strong>
+            </div>
+            <div>
+                <span>Total estimated charge</span>
+                <strong>₹@((doctor.ConsultationFee + 100).ToString("N0"))</strong>
+            </div>
+        </div>
+
+        <p class="notice">
+            This is a demonstration application. No appointment has been
+            permanently saved or confirmed by a hospital.
+        </p>
+
+        <a asp-action="Index" class="btn-primary full-button">
+            Explore Other Doctors
+        </a>
+    </section>
+</div>
